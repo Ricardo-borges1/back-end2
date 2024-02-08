@@ -1,4 +1,27 @@
+/*******************************************************
+ * Objetivo: ENDPOINTS
+ * DATA: 01/02/2024
+ * Autor: Ricardo Borges
+ * Versão: 1.0
+*******************************************************/
+
+
 //app importa funcoes
+
+
+/**
+ * Para realizar o acesso ao banco de dados precisamos instalar algumas bibliotecas
+ * 
+ *  - SEQUELIZE - UMA BIBLIOTECA MAIS ANTIGA
+ *  -PRISMA ORM -  BIBLIOTECA MAIS ATUAL (será utilizado no projeto)
+ *  - FASTFY ORM  - BIBLIOTECA MAIS ATUAL 
+ * 
+ *  Para instalar o PRISMA:
+ *  - npm install prisma --save (Irá realizar a conexão com banco de dados)
+ *  - npm install @prisma/client --save (Irá executar os scripts SQL no BD)
+ *   - npx prisma init (para funcionar ligar ele ao projeto)
+ * 
+ */  
 
 
 const express = require('express')
@@ -13,8 +36,20 @@ app.use((request,response,next) =>{
     app.use(cors())
     
     next();
-})
+});
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Import dos arquivos da controller do projeto 
+    const controllerFilmes = require ('./controller/controller_filme.js');
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// EndPoint : Versão 1.0 - retorna todos os filmes do arquivo filme.js
 
 app.get('/v1/filmesAcme/filmes', cors(), async function(request,response,next){
 
@@ -25,6 +60,25 @@ app.get('/v1/filmesAcme/filmes', cors(), async function(request,response,next){
         response.status(200);
     
 } )
+
+
+//EndPoint : Versão 2.0 - retorna todos os filmes do Banco de Dados 
+app.get('/v2/filmesAcme/filmes', cors(),async function (request,response,next){
+
+    // chama a função da controller para retornar os filmes;
+    let dadosFilmes = await controllerFilmes.getListarFilmes();
+
+    // validação para retornar o Json dos filmes ou retornar o erro 404;
+    if(dadosFilmes){
+        response.json(dadosFilmes);
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro foi encontrado'});
+        response.status(404);
+    }
+});
+
+
 
 
 app.get('/v1/filmesAcme/filme/:id', cors(), async function(request,response,next){
