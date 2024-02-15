@@ -31,8 +31,6 @@ const deleteFilme = async function (){
 }
 
 
-
-
 //função para listar todos os filmes do banco de dados
 const selectAllFilmes = async function(){
 
@@ -53,8 +51,17 @@ const selectAllFilmes = async function(){
 }
   
 
+const selectByNome = async function (nome){
 
+    
+    let sql = 'select * from tbl_filme where nome LIKE' + nome
+    let rsFilmes = await prisma.$queryRawUnsafe(sql);
 
+    if(rsFilmes.length>0)
+        return rsFilmes;
+    else
+        return false
+}
 
 // função para buscar um filme no banco de dados filtrando pelo id 
 const selectByIdFilme = async function (){
@@ -67,5 +74,6 @@ module.exports = {
     updateFilme,
     deleteFilme,
     selectAllFilmes,
-    selectByIdFilme
+    selectByIdFilme,
+    selectByNome
 }

@@ -79,8 +79,6 @@ app.get('/v2/filmesAcme/filmes', cors(),async function (request,response,next){
 });
 
 
-
-
 app.get('/v1/filmesAcme/filme/:id', cors(), async function(request,response,next){
 
 
@@ -89,6 +87,15 @@ app.get('/v1/filmesAcme/filme/:id', cors(), async function(request,response,next
     let filmes1 = filme.filme(mostrarFilme);
 
         response.json(filmes1);
+        response.status(200);
+} )
+
+app.get('/v1/filmesAcme/filmeNome', cors(), async function(request,response,next){
+
+    let nomeFilme = request.query.nome
+    let filmeNome = controllerFilmes.getBuscarFilmeNome(nomeFilme)
+
+        response.json(filmeNome);
         response.status(200);
 } )
 
