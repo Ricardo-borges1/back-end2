@@ -47,21 +47,6 @@ app.use((request,response,next) =>{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-// EndPoint : Versão 1.0 - retorna todos os filmes do arquivo filme.js
-
-app.get('/v1/filmesAcme/filmes', cors(), async function(request,response,next){
-
-    let filme = require ('./controller/funcoes');
-    let filmes = filme.filmes();
-
-        response.json(filmes);
-        response.status(200);
-    
-} )
-
-
 //EndPoint : Versão 2.0 - retorna todos os filmes do Banco de Dados 
 app.get('/v2/filmesAcme/filmes', cors(),async function (request,response,next){
 
@@ -78,29 +63,27 @@ app.get('/v2/filmesAcme/filmes', cors(),async function (request,response,next){
     }
 });
 
-
-app.get('/v1/filmesAcme/filme/:id', cors(), async function(request,response,next){
-
-
-    let mostrarFilme = request.params.id
-    let filme = require ('./controller/funcoes');
-    let filmes1 = filme.filme(mostrarFilme);
-
-        response.json(filmes1);
-        response.status(200);
-} )
-
 app.get('/v1/filmesAcme/filmeNome', cors(), async function(request,response,next){
 
     let nomeFilme = request.query.nome
-    let filmeNome = controllerFilmes.getBuscarFilmeNome(nomeFilme)
+    let filmeNome = await controllerFilmes.getBuscarFilmeNome(nomeFilme)
 
         response.json(filmeNome);
-        response.status(200);
+        response.status(filmeNome.status_code)
 } )
 
+// endPoint: retorna o filme filtrano pelo ID
+app.get('/v2/filmesAcme/filme/:id', cors(), async function(request,response,next){
 
+    // recebe o id da requisição
+    let idFilme = request.params.id
 
+    //encaminha o id para a acontroller buscar o filme
+    let dadosFilme = await controllerFilmes.getBuscarFilme(idFilme);
+
+    response.status(dadosFilme.status_code);
+    response.json(dadosFilme);
+})
 
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')
