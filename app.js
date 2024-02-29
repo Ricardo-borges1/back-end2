@@ -32,12 +32,11 @@ const app = express();
 
 app.use((request,response,next) =>{
     response.header('Acess-Control-Allow-Origin','*');
-    response.header('Acess-Control-Allow-Methods', 'GET');
+    response.header('Acess-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     app.use(cors())
     
     next();
 });
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +45,12 @@ app.use((request,response,next) =>{
     const controllerFilmes = require ('./controller/controller_filme.js');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Criando um objeto para controlar a chegada dos dados da requisição em formato JSON 
+const bodyParserJson = bodyParser.json();
+
+
 
 //EndPoint : Versão 2.0 - retorna todos os filmes do Banco de Dados 
 app.get('/v2/filmesAcme/filmes', cors(),async function (request,response,next){
@@ -84,6 +89,24 @@ app.get('/v2/filmesAcme/filme/:id', cors(), async function(request,response,next
     response.status(dadosFilme.status_code);
     response.json(dadosFilme);
 })
+
+
+// primeiro end point usando POST 
+app.post('/v2/filmesAcme/filme', cors(), bodyParserJson, async function (request, response,next ){
+
+    // vou receber o que chegar no corpo da requisição e guardar nessa variável local
+    let dadosBody = request.body;
+    // encaminha os dados para a controller enviar para o DAO
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody);
+
+
+    response.status(resultDadosNovoFilme.status_code);
+    response.json(resultDadosNovoFilme);
+
+
+
+
+} )
 
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')
