@@ -103,9 +103,6 @@ app.post('/v2/filmesAcme/filme', cors(), bodyParserJson, async function (request
     response.status(resultDadosNovoFilme.status_code);
     response.json(resultDadosNovoFilme);
 
-
-
-
 } )
 
 app.listen('8080', function(){
