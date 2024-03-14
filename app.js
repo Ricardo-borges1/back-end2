@@ -90,20 +90,47 @@ app.get('/v2/filmesAcme/filme/:id', cors(), async function(request,response,next
     response.json(dadosFilme);
 })
 
-
 // primeiro end point usando POST 
 app.post('/v2/filmesAcme/filme', cors(), bodyParserJson, async function (request, response,next ){
+
+    // recebe o ContentType com os tipos de dados encaminhados na requisição
+    let contentType = request.headers['content-type'];
 
     // vou receber o que chegar no corpo da requisição e guardar nessa variável local
     let dadosBody = request.body;
     // encaminha os dados para a controller enviar para o DAO
-    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody);
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody,contentType);
 
 
     response.status(resultDadosNovoFilme.status_code);
     response.json(resultDadosNovoFilme);
 
+})
+
+app.delete('/v1/filmesAcme/deleteFilme/:id', cors (), async function (request,response,next){
+
+    let idFilme = request.params.id
+
+    let dadosFilme = await controllerFilmes.setExcluirFilme(idFilme);
+
+    response.status(dadosFilme.status_code);
+    response.json(dadosFilme)
+})
+
+app.put('/v1/filmesAcme/uptadeFilme/:id', cors(), bodyParserJson, async function(request,response,next){
+
+    let idFilme = request.params.id
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body
+
+    let resultUptadeFilme = await controllerFilmes.setAtualizarFilme(idFilme, dadosBody, contentType);
+
+    response.status(resultUptadeFilme.status_code)
+    response.json(resultUptadeFilme)
+
+    
 } )
+
 
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')
