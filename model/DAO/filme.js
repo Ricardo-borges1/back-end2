@@ -97,7 +97,6 @@ const InsertById = async function (){
     }
 }
 
-
 //funcao para atualizar um filme no banco de dados
 const updateFilme = async function(id,dadosFilme){
     try{
@@ -109,7 +108,7 @@ const updateFilme = async function(id,dadosFilme){
             dadosFilme.data_relancamento != undefined
         ){
 
-            sql = `UPDATE tbl_filme SET nome = ${dadosFilme.nome},
+            sql = `UPDATE tbl_filme SET nome = '${dadosFilme.nome}',
                 sinopse = '${dadosFilme.sinopse}',
                 duracao = '${dadosFilme.duracao}',
                 data_lancamento = '${dadosFilme.data_lancamento}',
@@ -122,7 +121,7 @@ const updateFilme = async function(id,dadosFilme){
                 sinopse = '${dadosFilme.sinopse}',
                 duracao = '${dadosFilme.duracao}',
                 data_lancamento = '${dadosFilme.data_lancamento}',
-                data_relancamento = null ,
+                data_relancamento = null,
                 foto_capa = '${dadosFilme.foto_capa}',
                 valor_unitario  = '${dadosFilme.valor_unitario}' 
                  where tbl_filme.id = ${id}; `
@@ -137,7 +136,6 @@ const updateFilme = async function(id,dadosFilme){
         
     } catch (error) {
         
-       
         return false
 
     }
