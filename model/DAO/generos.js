@@ -1,5 +1,5 @@
 /*******************************************************
- * Objetivo: arquivo responsável pelo acesso ao Banco de Dados mySql, aqui faremos o CRUD na tabela de atores
+ * Objetivo: arquivo responsável pelo acesso ao Banco de Dados mySql, aqui faremos o CRUD na tabela de generos
  * DATA: 01/02/2024
  * Autor: Ricardo Borges
  * Versão: 1.0

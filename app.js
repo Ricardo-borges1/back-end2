@@ -46,7 +46,9 @@ app.use((request,response,next) =>{
 
     const controllerAtores = require ('./controller/controller_atores.js');
 
-    const controllerGeneros = require ('./controller/controller_generos.js')
+    const controllerGeneros = require ('./controller/controller_generos.js');
+
+    const controllerClassificacao = require ('./controller/controller_classificacao.js')
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -267,6 +269,85 @@ app.put('/v1/filmesAcme/uptadeGenero/:id', cors(), bodyParserJson, async functio
 
 
 
+// ************************************************************************************************************************************* //
+// ****************************  CRUD DA CLASSIFICACAO  ************************************************************
+// **************************************************************************************************************************************//
+
+
+//EndPoint : Versão 2.0 - retorna todas as classificacao do Banco de Dados 
+app.get('/v2/filmesAcme/classificacao', cors(),async function (request,response,next){
+
+    // chama a função da controller para retornar os filmes;
+    let dadosClassificacao = await controllerClassificacao.getListarClassificacao();
+
+    // validação para retornar o Json dos filmes ou retornar o erro 404;
+    if(dadosClassificacao){
+        response.json(dadosClassificacao);
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro foi encontrado'});
+        response.status(404);
+    }
+});
+
+
+// endPoint: retorna a classificacao filtrando pelo ID
+app.get('/v2/filmesAcme/classificacao/:id', cors(), async function(request,response,next){
+
+    // recebe o id da requisição
+    let idClassificacao = request.params.id
+
+    //encaminha o id para a acontroller buscar o filme
+    let dadosClassificacao = await controllerClassificacao.getBuscarClassificacaoId(idClassificacao);
+
+    response.status(dadosClassificacao.status_code);
+    response.json(dadosClassificacao);
+})
+
+
+// primeiro end point usando POST 
+app.post('/v2/filmesAcme/classificacao', cors(), bodyParserJson, async function (request, response,next ){
+
+    // recebe o ContentType com os tipos de dados encaminhados na requisição
+    let contentType = request.headers['content-type'];
+
+    // vou receber o que chegar no corpo da requisição e guardar nessa variável local
+    let dadosBody = request.body;
+    // encaminha os dados para a controller enviar para o DAO
+    let resultDadosNovaClassificacao = await controllerClassificacao.setInserirNovaClassificacao(dadosBody,contentType);
+
+
+    console.log(resultDadosNovaClassificacao)
+    response.status(200);
+    response.json(resultDadosNovaClassificacao);
+
+})
+
+
+app.delete('/v1/filmesAcme/deleteClassificacao/:id', cors (), async function (request,response,next){
+
+    let idClassificacao = request.params.id
+
+    let dadosClassificacao = await controllerClassificacao.setExcluirClassificacao(idClassificacao);
+
+    response.status(dadosClassificacao.status_code);
+    response.json(dadosClassificacao)
+})
+
+
+app.put('/v1/filmesAcme/uptadeClassificacao/:id', cors(), bodyParserJson, async function(request,response,next){
+
+    let idClassificacao = request.params.id
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body
+
+    let resultUptadeClassificacao = await controllerClassificacao.setAtualizarClassificacao(idClassificacao, dadosBody, contentType);
+
+    console.log();
+    response.status(200)
+    response.json(resultUptadeClassificacao)
+
+} )
 
 
 

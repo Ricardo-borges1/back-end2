@@ -1,5 +1,3 @@
-
-
 CREATE SCHEMA db_acme_filmes_turma_bbbb  ;
 USE db_acme_filmes_turma_bbbb;
 
@@ -11,9 +9,17 @@ CREATE TABLE  tbl_classificacao (
   classificacao VARCHAR(45) NOT NULL,
   PRIMARY KEY (id));
 
+
 insert into tbl_classificacao (caracteristicas, faixa_etaria, classificacao) values 
 ("Não expõe a criança a nenhum conteúdo possivelmente pertubador", "0", "Livre para os todos os públicos");
 select * from tbl_classificacao;
+
+UPDATE tbl_classificacao SET caracteristicas = 'Não expõe a criança a nenhum conteúdo possivelmente pertubador',
+                faixa_etaria = '0',
+                classificacao = 'Livreee para os todos os públicos',
+                icone = ''
+                where tbl_classificacao.id = 1;
+
 
 CREATE TABLE tbl_filme (
   id INT NOT NULL AUTO_INCREMENT,
@@ -50,6 +56,7 @@ insert into tbl_filme ( nome,
                1);   
                
                
+delete from tbl_classificacao WHERE id = 1;
 
 select * from tbl_filme;
 
@@ -65,6 +72,9 @@ CREATE TABLE  tbl_sexo (
   sigla VARCHAR(1) NOT NULL,
   nome VARCHAR(45) NOT NULL,
   PRIMARY KEY (id));
+  
+  
+  desc tbl_filme;
 
 
 
@@ -121,6 +131,12 @@ CREATE TABLE  tbl_filme_genero (
     REFERENCES tbl_genero (id)
 );
 
+insert into tbl_genero (nome) values ( 'terror' );
+
+select * from tbl_genero;
+
+UPDATE tbl_genero SET nome = 'teste'
+                where tbl_genero.id = 4;
 
 CREATE TABLE  tbl_filme_ator (
   id INT NOT NULL AUTO_INCREMENT,
