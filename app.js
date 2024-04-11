@@ -19,7 +19,7 @@
  *  Para instalar o PRISMA:
  *  - npm install prisma --save (Irá realizar a conexão com banco de dados)
  *  - npm install @prisma/client --save (Irá executar os scripts SQL no BD)
- *   - npx prisma init (para funcionar ligar ele ao projeto)
+ *  - npx prisma init (para funcionar ligar ele ao projeto)
  * 
  */  
 
@@ -43,6 +43,8 @@ app.use((request,response,next) =>{
 
     // Import dos arquivos da controller do projeto 
     const controllerFilmes = require ('./controller/controller_filme.js');
+
+    const controllerAtores = require ('./controller/controller_atores.js')
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,7 +79,7 @@ app.get('/v1/filmesAcme/filmeNome', cors(), async function(request,response,next
         response.status(filmeNome.status_code)
 } )
 
-// endPoint: retorna o filme filtrano pelo ID
+// endPoint: retorna o filme filtrando pelo ID
 app.get('/v2/filmesAcme/filme/:id', cors(), async function(request,response,next){
 
     // recebe o id da requisição
@@ -130,6 +132,55 @@ app.put('/v1/filmesAcme/uptadeFilme/:id', cors(), bodyParserJson, async function
 
     
 } )
+
+
+ 
+
+// ************************************************************************************************************************************* //
+// ****************************  CRUD DOS ATORES ************************************************************
+// **************************************************************************************************************************************//
+
+
+//EndPoint : Versão 2.0 - retorna todos os atores do Banco de Dados 
+app.get('/v2/filmesAcme/atores', cors(),async function (request,response,next){
+
+    // chama a função da controller para retornar os atores;
+    let dadosAtores = await controllerAtores.getListarAtores();
+
+    // validação para retornar o Json dos filmes ou retornar o erro 404;
+    if(dadosAtores){
+        response.json(dadosAtores);
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro foi encontrado'});
+        response.status(404);
+    }
+});
+
+
+// endPoint: retorna o ator filtrando pelo ID
+app.get('/v2/filmesAcme/ator/:id', cors(), async function(request,response,next){
+
+    // recebe o id da requisição
+    let idAtor = request.params.id
+
+    //encaminha o id para a acontroller buscar o filme
+    let dadosAtores = await controllerAtores.getBuscarAtorId(idAtor);
+
+    response.status(dadosAtores.status_code);
+    response.json(dadosAtores);
+})
+
+
+app.delete('/v1/filmesAcme/deleteAtor/:id', cors (), async function (request,response,next){
+
+    let idAtor = request.params.id
+
+    let dadosAtores = await controllerAtores.setExcluirAtor(idAtor);
+
+    response.status(dadosAtores.status_code);
+    response.json(dadosAtores)
+})
 
 
 app.listen('8080', function(){

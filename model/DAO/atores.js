@@ -46,8 +46,25 @@ const deleteAtores = async function (id) {
     }
 }
 
+const selectAtoresById = async function(id){
+    try {
+        // Realiza a busca do filme pelo ID
+        let sql = `select * from tbl_atores where id = ${id}`;
+    
+        // Executa no banco de dados o script sql
+        let rsAtores = await prisma.$queryRawUnsafe(sql);
+
+            return rsAtores;
+    
+        } catch (error) {
+            return false;
+            
+        }
+}
+
 
 module.exports = {
     selectAllAtores,
-    deleteAtores
+    deleteAtores,
+    selectAtoresById
 }
