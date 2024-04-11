@@ -44,7 +44,9 @@ app.use((request,response,next) =>{
     // Import dos arquivos da controller do projeto 
     const controllerFilmes = require ('./controller/controller_filme.js');
 
-    const controllerAtores = require ('./controller/controller_atores.js')
+    const controllerAtores = require ('./controller/controller_atores.js');
+
+    const controllerGeneros = require ('./controller/controller_generos.js')
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -181,6 +183,100 @@ app.delete('/v1/filmesAcme/deleteAtor/:id', cors (), async function (request,res
     response.status(dadosAtores.status_code);
     response.json(dadosAtores)
 })
+
+
+
+// ************************************************************************************************************************************* //
+// ****************************  CRUD DO GENERO  ************************************************************
+// **************************************************************************************************************************************//
+
+//EndPoint : Versão 2.0 - retorna todos os GENEROS do Banco de Dados 
+app.get('/v2/filmesAcme/generos', cors(),async function (request,response,next){
+
+    // chama a função da controller para retornar os filmes;
+    let dadosGenero = await controllerGeneros.getListarGeneros();
+
+    // validação para retornar o Json dos filmes ou retornar o erro 404;
+    if(dadosGenero){
+        response.json(dadosGenero);
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro foi encontrado'});
+        response.status(404);
+    }
+});
+
+
+// endPoint: retorna o genero filtrando pelo ID
+app.get('/v2/filmesAcme/generos/:id', cors(), async function(request,response,next){
+
+    // recebe o id da requisição
+    let idGenero = request.params.id
+
+    //encaminha o id para a acontroller buscar o filme
+    let dadosGenero = await controllerGeneros.getBuscarGeneroId(idGenero);
+
+    response.status(dadosGenero.status_code);
+    response.json(dadosGenero);
+})
+
+
+// primeiro end point usando POST 
+app.post('/v2/filmesAcme/genero', cors(), bodyParserJson, async function (request, response,next ){
+
+    // recebe o ContentType com os tipos de dados encaminhados na requisição
+    let contentType = request.headers['content-type'];
+
+    // vou receber o que chegar no corpo da requisição e guardar nessa variável local
+    let dadosBody = request.body;
+    // encaminha os dados para a controller enviar para o DAO
+    let resultDadosNovoGenero = await controllerGeneros.setInserirNovoGenero(dadosBody,contentType);
+
+
+    console.log(resultDadosNovoGenero)
+    response.status(200);
+    response.json(resultDadosNovoGenero);
+
+})
+
+
+app.delete('/v1/filmesAcme/deleteGenero/:id', cors (), async function (request,response,next){
+
+    let idGenero = request.params.id
+
+    let dadosGenero = await controllerGeneros.setExcluirGenero(idGenero);
+
+    response.status(dadosGenero.status_code);
+    response.json(dadosGenero)
+})
+
+
+app.put('/v1/filmesAcme/uptadeGenero/:id', cors(), bodyParserJson, async function(request,response,next){
+
+    let idGenero = request.params.id
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body
+
+    let resultUptadeGenero = await controllerGeneros.setAtualizarGenero(idGenero, dadosBody, contentType);
+
+    console.log();
+    response.status(200)
+    response.json(resultUptadeGenero)
+
+} )
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.listen('8080', function(){

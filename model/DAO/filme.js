@@ -33,7 +33,8 @@ const insertFilme = async function(dadosFilme){
                 data_lancamento,
                 data_relancamento,
                 foto_capa,
-                valor_unitario
+                valor_unitario,
+                tbl_classificacao_id
     ) values (
                 '${dadosFilme.nome}',
                 '${dadosFilme.sinopse}',
@@ -41,7 +42,8 @@ const insertFilme = async function(dadosFilme){
                 '${dadosFilme.data_lancamento}',
                 '${dadosFilme.data_relancamento}',
                 '${dadosFilme.foto_capa}',
-                '${dadosFilme.valor_unitario}'
+                '${dadosFilme.valor_unitario}',
+                ${dadosFilme.tbl_classificacao_id}
 
 
     )`;
@@ -54,7 +56,8 @@ const insertFilme = async function(dadosFilme){
                 data_lancamento,
                 data_relancamento,
                 foto_capa,
-                valor_unitario
+                valor_unitario,
+                tbl_classificacao_id
         ) values (
                 '${dadosFilme.nome}',
                 '${dadosFilme.sinopse}',
@@ -62,7 +65,8 @@ const insertFilme = async function(dadosFilme){
                 '${dadosFilme.data_lancamento}',
                  null,
                 '${dadosFilme.foto_capa}',
-                '${dadosFilme.valor_unitario}'
+                '${dadosFilme.valor_unitario}',
+                ${dadosFilme.tbl_classificacao_id}
         )`;
                 }
 
@@ -114,7 +118,8 @@ const updateFilme = async function(id,dadosFilme){
                 data_lancamento = '${dadosFilme.data_lancamento}',
                 data_relancamento = '${dadosFilme.data_relancamento}',
                 foto_capa = '${dadosFilme.foto_capa}',
-                valor_unitario  = '${dadosFilme.valor_unitario}' 
+                valor_unitario  = '${dadosFilme.valor_unitario}',
+                tbl_classificacao_id = '${dadosFilme.tbl_classificacao_id}'
                 where tbl_filme.id = ${id}; `
         } else {
              sql = `UPDATE tbl_filme SET  nome = '${dadosFilme.nome}',
@@ -123,7 +128,8 @@ const updateFilme = async function(id,dadosFilme){
                 data_lancamento = '${dadosFilme.data_lancamento}',
                 data_relancamento = null,
                 foto_capa = '${dadosFilme.foto_capa}',
-                valor_unitario  = '${dadosFilme.valor_unitario}' 
+                valor_unitario  = '${dadosFilme.valor_unitario}',
+                tbl_classificacao_id = '${dadosFilme.tbl_classificacao_id}'
                  where tbl_filme.id = ${id}; `
         }
 
@@ -169,6 +175,7 @@ const selectAllFilmes = async function(){
     
     return rsFilmes;
     } catch (error) {
+        console.log(error)
         return false;
     }
  

@@ -6,7 +6,7 @@
 */
 
 // ASYNC OBRIGATORIO
-//funcao para inserir um filme no banco de dados
+
 
 
 // função que faz o import da biblioteca do prisma client para manipular scripts SQL
@@ -20,7 +20,7 @@ const prisma = new PrismaClient();
 const selectAllAtores = async function(){
 
     try {
-        let sql = 'select * from tbl_atores order by id desc'; 
+        let sql = 'select * from tbl_ator order by id desc'; 
 
     let rsAtores = await prisma.$queryRawUnsafe(sql)
 
@@ -36,7 +36,7 @@ const selectAllAtores = async function(){
 
 const deleteAtores = async function (id) {
     try {
-        let sql = `delete from tbl_atores WHERE id = ${id}`
+        let sql = `delete from tbl_ator WHERE id = ${id}`
 
         let rsAtores = await prisma.$queryRawUnsafe(sql);
 
@@ -49,7 +49,7 @@ const deleteAtores = async function (id) {
 const selectAtoresById = async function(id){
     try {
         // Realiza a busca do filme pelo ID
-        let sql = `select * from tbl_atores where id = ${id}`;
+        let sql = `select * from tbl_ator where id = ${id}`;
     
         // Executa no banco de dados o script sql
         let rsAtores = await prisma.$queryRawUnsafe(sql);

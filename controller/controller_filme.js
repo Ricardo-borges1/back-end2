@@ -31,7 +31,8 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
         dadosFilme.duracao == ''                  || dadosFilme.duracao == undefined            ||  dadosFilme.duracao ==  null           || dadosFilme.duracao.length > 8           ||
         dadosFilme.data_lancamento == ''          || dadosFilme.data_lancamento == undefined    ||  dadosFilme.data_lancamento == null    || dadosFilme.data_lancamento.length != 10 ||
         dadosFilme.foto_capa == ''                || dadosFilme.foto_capa == undefined          ||  dadosFilme.foto_capa ==  null         || dadosFilme.foto_capa.length > 200       ||
-        dadosFilme.valor_unitario.length > 6      
+        dadosFilme.valor_unitario.length > 6 || 
+        dadosFilme.tbl_classificacao_id == '' || dadosFilme.tbl_classificacao_id == undefined || dadosFilme.tbl_classificacao_id == null   
     ){
         
         // return do status code 400
@@ -79,6 +80,7 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
 
             return novoFilmeJSON; // 201
         }else{
+         
             return message.ERROR_INTERNAL_SERVER_DB // 500
             }
         }   
@@ -220,12 +222,13 @@ const getListarFilmes = async function(){
     }
 
 } catch (error) {
+    
     return message.ERROR_INTERNAL_SERVER;
 }
 }
 
 const getBuscarFilmeNome = async(nome) => {
-     // Cri o objeto JSON
+     // Cria o objeto JSON
 
      try{
 
