@@ -8,7 +8,6 @@
 // IMport das mensagens de erro e configuração do projeto
 const message = require ('../modulo/config.js');
 
-
 // Import do arquivo DAO que fará a comuicação do banco de dados 
 const filmeDAO = require('../model/DAO/filme.js')
 

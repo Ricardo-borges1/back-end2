@@ -16,7 +16,7 @@ const ERROR_INTERNAL_SERVER = {status : false, status_code: 500, message: ' Não
 
 /*********************** MENSAGENS DE SUCESSO ************************************/
 
-const SUCESS_CREATED_ITEM = {status : true, status_code: 201, message: 'Item criado com sucesso'}
+const SUCESS_CREATED_ITEM = {status: true, status_code: 201, message: 'Item criado com sucesso'}
 const SUCESS_DELETE_ITEM = {status: true, status_code: 201, message: 'Item deletado com sucesso'}
 const SUCESS_UPTADE_ITEM = {status: true, status_code: 200, message: 'Item editado com sucesso'}
 

@@ -8,7 +8,7 @@
 
 // IMport das mensagens de erro e configuração do projeto
 const message = require ('../modulo/config.js');
-
+const sexoDAO = require ('../model/DAO/sexo.js')
 
 // Import do arquivo DAO que fará a comuicação do banco de dados 
 const atorDAO = require('../model/DAO/atores.js')
@@ -24,23 +24,21 @@ const getListarAtores = async function(){
 
     //Chama a funcão do DAO para retornar os dados da tabela de atores
     let dadosAtores = await atorDAO.selectAllAtores();
-
-    // Validação para verificar s existem dados 
-    if (dadosAtores){
-
-        if(dadosAtores.length > 0){
-            // Cria o JSON para devolver para o APP
-        atoresJSON.atores = dadosAtores;
-        atoresJSON.quantidade = dadosAtores.length;
-        atoresJSON.status_code = 200;
-        return atoresJSON;
-        } else {
+        if (dadosAtores) {
+            if(dadosAtores.length > 0){
+                for (let ator of dadosAtores){
+                    let sexoAtor = await sexoDAO.selectByIdSexo(ator.tbl_sexo_id)
+                    delete ator.tbl_sexo_id
+                    ator.sexo = sexoAtor
+                }
+                atoresJSON.atores = dadosAtores
+                atoresJSON.quantidade = dadosAtores.length
+                atoresJSON.status_code = 200
+                return atoresJSON
+            } else 
             return message.ERROR_NOT_FOUND
-        } 
-    }else{
-        return message.ERROR_INTERNAL_SERVER_DB; 
-    }
-
+        } else 
+            return message.ERROR_INTERNAL_SERVER_DB
 } catch (error) {
     return message.ERROR_INTERNAL_SERVER;
 }
@@ -64,7 +62,7 @@ const getBuscarAtorId = async function (id){
     } else {
 
         // encaminha o id para o DAO buscar no banco de dados 
-        let dadosAtores = await atorDAO.selectAtoresById(id)
+        let dadosAtores = await atorDAO.selectAtoresById(idAtor)
 
         // verifca se o DAO retornou dados 
         if(dadosAtores){
@@ -117,9 +115,123 @@ const setExcluirAtor = async function(id){
     }
 }
 
+ const getBuscarAtorNome = async function (nome){
+    try {
+        
+        let nomeAtor = nome 
+        let atoresJSON = {}
+        if (nomeAtor == '' ||nomeAtor==undefined||!isNaN(nomeAtor))
+        return message.ERROR_INVALID_ID
+        else {
+            let dadosAtores = await atorDAO.selectByNomeAtor (nomeAtor)
+            if (dadosAtores){
+                if (dadosAtores.length>0){
+                    atoresJSON.atores = dadosAtores
+                    atoresJSON.status_code = 200 
+                    return atoresJSON
+                } else 
+                return message.ERROR_NOT_FOUND
+            }
+            else 
+            return message.ERROR_INTERNAL_SERVER_DB
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
+const setAtualizarAtor = async function (id, dadosAtores, contentType){
+    try {
+        
+        if(String(contentType).toLowerCase()=='application/json'){
+             let idAtor=id
+            if(idAtor==''||idAtor==undefined||isNaN(idAtor))
+                return message.ERROR_INVALID_ID
+            else{
+                let atores =await atorDAO.selectByidAtor(idAtor)
+                if(atores){
+                    let updateAtoresJSON={}
+                    let updateAtores=await atorDAO.updateAtores(idAtor, dadosAtores)
+                    if(updateAtores){
+                        updateAtoresJSON.ator=dadosAtores
+                        filmeAtualizadoJSON.status=message.SUCCES_UPDATED_ITEM.status
+                        filmeAtualizadoJSON.status_code=message.SUCCES_UPDATED_ITEM.status_code
+                        filmeAtualizadoJSON.message=message.SUCCES_UPDATED_ITEM.message
+                        return filmeAtualizadoJSON
+                    }
+                }
+            }
+        }
+
+    } catch (error) {
+        
+    }
+}
+
+const setInserirAtor = async function (dadosAtores, contentType){
+    try {
+        if(String(contentType).toLowerCase()=='application/json'){
+            let novoAtorJSON={}
+            let ultimoID
+            console.log(dadosAtores);
+            if(
+            dadosAtores.nome==''            ||dadosAtores.nome==undefined            ||dadosAtores.nome==null            ||dadosAtores.nome.length>100            ||
+            dadosAtores.data_nascimento=='' ||dadosAtores.data_nascimento==undefined ||dadosAtores.data_nascimento==null ||dadosAtores.data_nascimento.length!=10 ||
+            dadosAtores.biografia==''       ||dadosAtores.biografia==undefined       ||dadosAtores.biografia==null       ||dadosAtores.biografia.length>65000     ||
+            dadosAtores.foto==''            ||dadosAtores.foto==undefined            ||dadosAtores.foto==null            ||dadosAtores.foto.length>150            ||
+            dadosAtores.sexo[0].nome==''     ||dadosAtores.sexo[0].nome==undefined         ||dadosAtores.sexo[0].nome==null         ||dadosAtores.sexo[0].nome.length>20
+            ) {
+                console.log('aqui');
+                return message.ERROR_REQUIRED_FIELDS
+            } else{
+                let validateStatus=false
+                if(dadosAtores.data_falecimento!=null&&dadosAtores.data_falecimento!=''&&dadosAtores.data_falecimento!=undefined){
+                    if(dadosAtores.data_falecimento.length!=10){
+                        console.log('ali');
+                        return message.ERROR_REQUIRED_FIELDS
+                    }else{
+                        validateStatus=true
+                    }
+                }else{
+                    validateStatus=true
+                }
+    
+                if(validateStatus){
+                    let novoAtor=await atorDAO.insertAtores(dadosAtores)
+                    console.log(novoAtor);
+                    if(novoAtor){
+                        console.log('oioioii');
+                        novoAtorJSON.ator=dadosAtores
+                        novoAtorJSON.status=message.SUCESS_CREATED_ITEM.status
+                        console.log('aaaaaaaaaaaa');
+                        novoAtorJSON.status_code=message.SUCESS_CREATED_ITEM.status_code
+                        novoAtorJSON.message=message.SUCESS_CREATED_ITEM.message
+
+                        console.log(novoAtorJSON);
+                        ultimoID=await atorDAO.selectLastId()
+                        dadosAtores.id=ultimoID[0].id  
+                        
+                        return novoAtorJSON
+                    }
+    
+                    else{
+                        return message.ERROR_INTERNAL_SERVER_DB
+                    }
+                }
+            }
+        }else{
+            return message.ERROR_CONTENT_TYPE
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
 
 module.exports = {
     getListarAtores,
     getBuscarAtorId,
-    setExcluirAtor
+    setExcluirAtor,
+    getBuscarAtorNome,
+    setAtualizarAtor,
+    setInserirAtor
 }

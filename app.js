@@ -161,6 +161,24 @@ app.get('/v2/filmesAcme/atores', cors(),async function (request,response,next){
     }
 });
 
+app.post('/v2/filmesAcme/novoAtor', cors(), bodyParserJson, async function (request, response){
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+    let resultDadosNovoAtor = await controllerAtores.setInserirAtor(dadosBody,contentType)
+    response.status(resultDadosNovoAtor.status_code)
+    response.json(resultDadosNovoAtor)
+})
+
+app.put('/v2/filmesAcme/updateAtores/:id', cors(), bodyParserJson, async function(request, response){
+   let contentType = request.headers['content-type']
+   let dadosBody = request.body
+   let idAtor=request.params.id
+   
+   let resultDadosNovoAtor = await controllerAtores.setAtualizarAtor(idAtor,dadosBody,contentType)
+   console.log(resultDadosNovoAtor);
+   response.status(200)
+   response.json(resultDadosNovoAtor)
+})
 
 // endPoint: retorna o ator filtrando pelo ID
 app.get('/v2/filmesAcme/ator/:id', cors(), async function(request,response,next){
@@ -183,6 +201,13 @@ app.delete('/v1/filmesAcme/deleteAtor/:id', cors (), async function (request,res
     let dadosAtores = await controllerAtores.setExcluirAtor(idAtor);
 
     response.status(dadosAtores.status_code);
+    response.json(dadosAtores)
+})
+
+app.get('/v1/filmesAcme/atorNome', cors(), async function (request, response){
+    let nomeAtor = request.query.nome
+    let dadosAtores = await controllerAtores.getBuscarAtorNome(nomeAtor)
+    response.status(dadosAtores.status_code)
     response.json(dadosAtores)
 })
 
