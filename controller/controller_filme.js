@@ -97,6 +97,7 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
 //função para validar e atualizar um filme
 const setAtualizarFilme = async function(id, dadosFilme, contentType){
     
+    console.log("aaaaaaa");
     try{
         let idFilme = id;
 
@@ -108,12 +109,14 @@ const setAtualizarFilme = async function(id, dadosFilme, contentType){
         if(String(contentType).toLowerCase() == 'application/json'){
             let updateFilmeJson = {};
             
+            console.log("aaaaaaa");
             if(dadosFilme.nome == ''                      || dadosFilme.nome == undefined               ||  dadosFilme.nome == null               || dadosFilme.nome.length > 80             || 
             dadosFilme.sinopse == ''                  || dadosFilme.sinopse == undefined            ||  dadosFilme.sinopse == null            || dadosFilme.sinopse.length > 65000       ||
             dadosFilme.duracao == ''                  || dadosFilme.duracao == undefined            ||  dadosFilme.duracao ==  null           || dadosFilme.duracao.length > 8           ||
             dadosFilme.data_lancamento == ''          || dadosFilme.data_lancamento == undefined    ||  dadosFilme.data_lancamento == null    || dadosFilme.data_lancamento.length != 10 ||
             dadosFilme.foto_capa == ''                || dadosFilme.foto_capa == undefined          ||  dadosFilme.foto_capa ==  null         || dadosFilme.foto_capa.length > 200       ||
-            dadosFilme.valor_unitario.length > 6      
+            dadosFilme.valor_unitario.length > 6      || 
+            dadosFilme.tbl_classificacao_id == '' || dadosFilme.tbl_classificacao_id == undefined || dadosFilme.tbl_classificacao_id == null   
         ){
             return message.ERROR_REQUIRED_FIELDS
         } else {
@@ -133,6 +136,8 @@ const setAtualizarFilme = async function(id, dadosFilme, contentType){
             }
 
             let filmeById = await filmeDAO.selectByIdFilme(id)
+           
+            console.log(filmeById);
             if(filmeById.length > 0){
                 if (validateStatus){
                     let uptadeFilme = await filmeDAO.updateFilme(id,dadosFilme);
@@ -158,7 +163,9 @@ const setAtualizarFilme = async function(id, dadosFilme, contentType){
         }
         }
 
+        
     } catch (error) {
+        console.log(error);
         return message.ERROR_INTERNAL_SERVER
     }
 

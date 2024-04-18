@@ -31,8 +31,8 @@ const bodyParser = require('body-parser')
 const app = express();
 
 app.use((request,response,next) =>{
-    response.header('Acess-Control-Allow-Origin','*');
-    response.header('Acess-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.header('Access-Control-Allow-Origin','*');
+    response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     app.use(cors())
     
     next();
@@ -123,7 +123,7 @@ app.delete('/v1/filmesAcme/deleteFilme/:id', cors (), async function (request,re
     response.json(dadosFilme)
 })
 
-app.put('/v1/filmesAcme/uptadeFilme/:id', cors(), bodyParserJson, async function(request,response,next){
+app.put('/v1/filmesAcme/updateFilme/:id', cors(), bodyParserJson, async function(request,response,next){
 
     let idFilme = request.params.id
     let contentType = request.headers['content-type'];
