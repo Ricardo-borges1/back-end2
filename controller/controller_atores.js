@@ -44,7 +44,6 @@ const getListarAtores = async function(){
 }
 }
 
-
 //função para buscar ator pelo ID
 const getBuscarAtorId = async function (id){
 
@@ -145,26 +144,36 @@ const setAtualizarAtor = async function (id, dadosAtores, contentType){
         
         if(String(contentType).toLowerCase()=='application/json'){
              let idAtor=id
+             
             if(idAtor==''||idAtor==undefined||isNaN(idAtor))
                 return message.ERROR_INVALID_ID
             else{
-                let atores =await atorDAO.selectByidAtor(idAtor)
+               
+                let atores =await atorDAO.selectAtoresById(idAtor)
                 if(atores){
+                 
                     let updateAtoresJSON={}
                     let updateAtores=await atorDAO.updateAtores(idAtor, dadosAtores)
                     if(updateAtores){
                         updateAtoresJSON.ator=dadosAtores
-                        filmeAtualizadoJSON.status=message.SUCCES_UPDATED_ITEM.status
-                        filmeAtualizadoJSON.status_code=message.SUCCES_UPDATED_ITEM.status_code
-                        filmeAtualizadoJSON.message=message.SUCCES_UPDATED_ITEM.message
-                        return filmeAtualizadoJSON
+                        updateAtores.status=message.SUCESS_UPTADE_ITEM.status
+                        updateAtores.status_code=message.SUCESS_UPTADE_ITEM.status_code
+                        updateAtores.message=message.SUCESS_UPTADE_ITEM.message
+                        return updateAtores
+                    }
+                    else{
+                        return message.ERROR_NOT_FOUND
                     }
                 }
+                else{
+                    return message.ERROR_NOT_FOUND
+                }
             }
+        } else {
+            return message.ERROR_CONTENT_TYPE
         }
-
     } catch (error) {
-        
+        return message.ERROR_INTERNAL_SERVER
     }
 }
 

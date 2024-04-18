@@ -73,6 +73,15 @@ CREATE TABLE  tbl_sexo (
   nome VARCHAR(45) NOT NULL,
   PRIMARY KEY (id));
   
+  insert into tbl_sexo ( sigla, nome) values (
+  
+    "M",
+    "Masculino"
+  ), (
+	"F",
+    "Feminino"
+  );
+  
   
   desc tbl_filme;
 
@@ -90,7 +99,40 @@ CREATE TABLE  tbl_ator (
   CONSTRAINT fk_tbl_ator_tbl_sexo1
     FOREIGN KEY (tbl_sexo_id)
     REFERENCES tbl_sexo (id));
+    
+    insert into tbl_ator ( 
+    nome,
+    data_nascimento,
+    biografia,
+    foto,
+    tbl_sexo_id 
+    ) values (
+		'Sydney Sweeney',
+    '1997-09-12',
+    'Sydney Bernice Sweeney é uma atriz e produtora estadunidense, indicada duas vezes ao Emmy. Ela é conhecida principalmente por seus papéis como Cassie Howard em Euphoria, Olivia Mossbacher em The White Lotus, Bea em Anyone but You e Julia Carpenter em Madame Web.',
+    'https://upload.wikimedia.org/wikipedia/commons/4/4f/Sydney_Sweeney_2019_by_Glenn_Francis.jpg',
+    2
+),(
+'Glen Powell',
+    '1988-10-21',
+    'Glen Thomas Powell Jr. é um ator, dublê, escritor e produtor norte-americano, conhecido por interpretar Thorn no filme Os Mercenários 3 e retratar o astronauta John Glenn no drama biográfico Hidden Figures, de 2017.',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Glen_Powell_in_2016.jpg',
+    1
+),(
+'Timothée Chalamet',
+    '1995-12-27',
+    'Timothée Hal Chalamet, é um ator franco-americano. Começou sua carreira de ator em curtas-metragens, antes de aparecer na série de televisão Homeland, interpretando Finn Walden.',
+    'https://upload.wikimedia.org/wikipedia/commons/a/a9/Interview_with_Timoth%C3%A9e_Chalamet%2C_2019.png',
+    1
+),(
+'Zendaya',
+    '1996-09-01',
+    'Zendaya Maree Stoermer Coleman, conhecida como Zendaya, é uma atriz, dançarina, modelo, cantora e compositora norte-americana, que ganhou notoriedade com seu trabalho na Disney Channel, como Rocky Blue na série Shake It Up e K.C. Cooper em K.C. Undercover.',
+    'https://br.web.img2.acsta.net/c_310_420/pictures/19/12/26/23/19/0993801.jpg',
+    2
+);
 
+select * from tbl_ator;
 
 
 CREATE TABLE  tbl_diretor (
@@ -112,8 +154,28 @@ CREATE TABLE  tbl_nacionalidade (
   id INT NOT NULL AUTO_INCREMENT,
   nome VARCHAR(45) NOT NULL,
   PRIMARY KEY (id));
+  
+  
+  insert into tbl_nacionalidade(
+  
+  nome
+) values (
 
+" Brasileiro"
+), (
+	"Angolano"
+) ,(
 
+" Canadense"
+
+) , ( 
+
+"Italiano"
+
+) , ("Espanhol")
+;
+
+select * from tbl_nacionalidade;
 
 
 CREATE TABLE  tbl_filme_genero (
@@ -133,7 +195,7 @@ CREATE TABLE  tbl_filme_genero (
 
 insert into tbl_genero (nome) values ( 'terror' );
 
-select * from tbl_genero;
+select * from tbl_sexo;
 
 UPDATE tbl_genero SET nome = 'teste'
                 where tbl_genero.id = 4;

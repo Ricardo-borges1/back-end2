@@ -138,7 +138,7 @@ const updateAtores = async function (id, dadosAtores){
             data_falecimento = '${dadosAtores.data_falecimento}',
             biografia = '${dadosAtores.biografia}',
             foto = '${dadosAtores.foto}',
-            tbl_sexo_id = '${dadosAtores.tbl_sexo_id}' where tbl_ator.id = '${id}'
+            tbl_sexo_id = '${dadosAtores.sexo[0].id}' where tbl_ator.id = '${id}'
             `
         } else {
 
@@ -148,7 +148,7 @@ const updateAtores = async function (id, dadosAtores){
                 data_falecimento =  null,
                 biografia =  '${dadosAtores.biografia}',
                 foto = '${dadosAtores.foto}',
-                tbl_sexo_id = '${dadosAtores.tbl_sexo_id}' where tbl_ator.id = '${id}'`
+                tbl_sexo_id = '${dadosAtores.sexo[0].id}' where tbl_ator.id = '${id}'`
         }
         
         let result = await prisma.$executeRawUnsafe(sql)
