@@ -9,6 +9,8 @@
 // IMport das mensagens de erro e configuração do projeto
 const message = require ('../modulo/config.js');
 const sexoDAO = require ('../model/DAO/sexo.js')
+const nacionalidadeDAO = require ('../model/DAO/nacionalidadeAtor.js')
+
 
 // Import do arquivo DAO que fará a comuicação do banco de dados 
 const atorDAO = require('../model/DAO/atores.js')
@@ -30,6 +32,12 @@ const getListarAtores = async function(){
                     let sexoAtor = await sexoDAO.selectByIdSexo(ator.tbl_sexo_id)
                     delete ator.tbl_sexo_id
                     ator.sexo = sexoAtor
+                }
+                for (let ator of dadosAtores){
+                    let nacionalidadeAtor = await nacionalidadeDAO.selectAtoresNacionalidadeById(ator.id)
+                    if(nacionalidadeAtor.length > 0){
+                        ator.nacionalidade = nacionalidadeAtor
+                    }
                 }
                 atoresJSON.atores = dadosAtores
                 atoresJSON.quantidade = dadosAtores.length

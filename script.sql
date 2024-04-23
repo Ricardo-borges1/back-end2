@@ -1,4 +1,4 @@
-CREATE SCHEMA db_acme_filmes_turma_bbbb  ;
+CREATE SCHEMA db_acme_filmes_turma_bbbb ;
 USE db_acme_filmes_turma_bbbb;
 
 
@@ -27,7 +27,7 @@ CREATE TABLE tbl_filme (
   sinopse TEXT NOT NULL,
   duracao TIME NOT NULL,
   data_lancamento DATE NOT NULL,
-  data_relancamento DATE NOT NULL,
+  data_relancamento DATE ,
   valor_unitario FLOAT NOT NULL,
   foto_capa VARCHAR(145) NOT NULL,
   tbl_classificacao_id INT NOT NULL,
@@ -36,6 +36,8 @@ CREATE TABLE tbl_filme (
   CONSTRAINT fk_tbl_filme_tbl_classificacao
     FOREIGN KEY (tbl_classificacao_id)
     REFERENCES tbl_classificacao (id));
+    
+    select * from tbl_filme;
    
 insert into tbl_filme ( nome,
                 sinopse,
@@ -50,7 +52,7 @@ insert into tbl_filme ( nome,
                 'teste',
                 '01:02:00',
                 '2024-04-11',
-                null,
+                '2023-03-12',
                 'url add',
                 '20',
                1);   
@@ -94,6 +96,7 @@ CREATE TABLE  tbl_ator (
   biografia TEXT NULL,
   data_nascimento DATE NOT NULL,
   tbl_sexo_id INT NOT NULL,
+  foto TEXT NULL,
   PRIMARY KEY (id),
   INDEX fk_tbl_ator_tbl_sexo1_idx (tbl_sexo_id ASC),
   CONSTRAINT fk_tbl_ator_tbl_sexo1
@@ -104,33 +107,30 @@ CREATE TABLE  tbl_ator (
     nome,
     data_nascimento,
     biografia,
-    foto,
     tbl_sexo_id 
     ) values (
 		'Sydney Sweeney',
     '1997-09-12',
     'Sydney Bernice Sweeney é uma atriz e produtora estadunidense, indicada duas vezes ao Emmy. Ela é conhecida principalmente por seus papéis como Cassie Howard em Euphoria, Olivia Mossbacher em The White Lotus, Bea em Anyone but You e Julia Carpenter em Madame Web.',
-    'https://upload.wikimedia.org/wikipedia/commons/4/4f/Sydney_Sweeney_2019_by_Glenn_Francis.jpg',
     2
 ),(
 'Glen Powell',
     '1988-10-21',
     'Glen Thomas Powell Jr. é um ator, dublê, escritor e produtor norte-americano, conhecido por interpretar Thorn no filme Os Mercenários 3 e retratar o astronauta John Glenn no drama biográfico Hidden Figures, de 2017.',
-    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Glen_Powell_in_2016.jpg',
     1
 ),(
 'Timothée Chalamet',
     '1995-12-27',
     'Timothée Hal Chalamet, é um ator franco-americano. Começou sua carreira de ator em curtas-metragens, antes de aparecer na série de televisão Homeland, interpretando Finn Walden.',
-    'https://upload.wikimedia.org/wikipedia/commons/a/a9/Interview_with_Timoth%C3%A9e_Chalamet%2C_2019.png',
     1
 ),(
 'Zendaya',
     '1996-09-01',
     'Zendaya Maree Stoermer Coleman, conhecida como Zendaya, é uma atriz, dançarina, modelo, cantora e compositora norte-americana, que ganhou notoriedade com seu trabalho na Disney Channel, como Rocky Blue na série Shake It Up e K.C. Cooper em K.C. Undercover.',
-    'https://br.web.img2.acsta.net/c_310_420/pictures/19/12/26/23/19/0993801.jpg',
     2
 );
+
+insert into tbl_ator_nacionalidade (tbl_nacionalidade_id, tbl_ator_id) values (1, 4);
 
 select * from tbl_ator;
 
@@ -177,6 +177,7 @@ CREATE TABLE  tbl_nacionalidade (
 
 select * from tbl_nacionalidade;
 
+select * from tbl_ator as ta inner join tbl_ator_nacionalidade as tan on ta.id=tan.tbl_ator_id inner join tbl_nacionalidade as tn on tan.tbl_nacionalidade_id = tn.id;
 
 CREATE TABLE  tbl_filme_genero (
   id INT NOT NULL,
