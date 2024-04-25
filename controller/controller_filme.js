@@ -215,6 +215,7 @@ const getListarFilmes = async function(){
     if (dadosFilmes){
 
         if(dadosFilmes.length > 0){
+            
             // Cria o JSON para devolver para o APP
         filmesJSON.filmes = dadosFilmes;
         filmesJSON.quantidade = dadosFilmes.length;

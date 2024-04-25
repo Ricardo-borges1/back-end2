@@ -64,7 +64,6 @@ const selectAtoresById = async function(id){
 const insertAtores = async function (dadosAtores){
     try {
         
-
         let sql 
 
         if (dadosAtores.data_falecimento != '' &&
@@ -107,8 +106,9 @@ const insertAtores = async function (dadosAtores){
                 null,
                 '${dadosAtores.biografia}',
                 '${dadosAtores.foto}',
-                '${dadosAtores.sexo[0].id}',
+                '${dadosAtores.sexo[0].id}'
             )`
+            
 
             let result = await prisma.$executeRawUnsafe(sql)
             if (result)

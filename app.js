@@ -48,7 +48,9 @@ app.use((request,response,next) =>{
 
     const controllerGeneros = require ('./controller/controller_generos.js');
 
-    const controllerClassificacao = require ('./controller/controller_classificacao.js')
+    const controllerClassificacao = require ('./controller/controller_classificacao.js');
+
+    const controllerDiretores = require ('./controller/controlller_diretores.js')
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -375,14 +377,76 @@ app.put('/v1/filmesAcme/uptadeClassificacao/:id', cors(), bodyParserJson, async 
 } )
 
 
+// ************************************************************************************************************************************* //
+// ****************************  CRUD DOS DIRETORES ************************************************************
+// **************************************************************************************************************************************//
 
 
+//EndPoint : Versão 2.0 - retorna todos os atores do Banco de Dados 
+app.get('/v2/filmesAcme/diretores', cors(),async function (request,response,next){
+
+    // chama a função da controller para retornar os atores;
+    let dadosDiretores = await controllerDiretores.getListarDiretores();
+
+    // validação para retornar o Json dos filmes ou retornar o erro 404;
+    if(dadosDiretores){
+        response.json(dadosDiretores);
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro foi encontrado'});
+        response.status(404);
+    }
+});
+
+app.post('/v2/filmesAcme/novoDiretor', cors(), bodyParserJson, async function (request, response){
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+    let resultDadosNovoDiretor = await controllerDiretores.setInserirDiretor(dadosBody,contentType)
+    response.status(resultDadosNovoDiretor.status_code)
+    response.json(resultDadosNovoDiretor)
+})
+
+app.put('/v2/filmesAcme/updateDiretor/:id', cors(), bodyParserJson, async function(request, response){
+   let contentType = request.headers['content-type']
+   let dadosBody = request.body
+   let idDiretor=request.params.id
+   
+   let resultDadosNovoDiretor = await controllerDiretores.setAtualizarDiretor(idDiretor,dadosBody,contentType)
+   console.log(resultDadosNovoDiretor);
+   response.status(200)
+   response.json(resultDadosNovoDiretor)
+})
+
+// endPoint: retorna o ator filtrando pelo ID
+app.get('/v2/filmesAcme/diretor/:id', cors(), async function(request,response,next){
+
+    // recebe o id da requisição
+    let idDiretor = request.params.id
+
+    //encaminha o id para a acontroller buscar o filme
+    let dadosDiretores = await controllerDiretores.getBuscarDiretorId(idDiretor);
+
+    response.status(dadosDiretores.status_code);
+    response.json(dadosDiretores);
+})
 
 
+app.delete('/v1/filmesAcme/deleteDiretor/:id', cors (), async function (request,response,next){
 
+    let idDiretor = request.params.id
 
+    let dadosDiretores = await controllerDiretores.setExcluirDiretor(idDiretor);
 
+    response.status(dadosDiretores.status_code);
+    response.json(dadosDiretores)
+})
 
+app.get('/v1/filmesAcme/DiretorNome', cors(), async function (request, response){
+    let nomeDiretor = request.query.nome
+    let dadosDiretores = await controllerDiretores.getBuscarDiretorNome(nomeDiretor)
+    response.status(dadosDiretores.status_code)
+    response.json(dadosDiretores)
+})
 
 
 app.listen('8080', function(){

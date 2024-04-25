@@ -130,7 +130,7 @@ CREATE TABLE  tbl_ator (
     2
 );
 
-insert into tbl_ator_nacionalidade (tbl_nacionalidade_id, tbl_ator_id) values (1, 4);
+insert into tbl_ator_nacionalidade (tbl_nacionalidade_id, tbl_ator_id) values (1, 14);
 
 select * from tbl_ator;
 

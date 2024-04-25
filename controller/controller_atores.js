@@ -76,6 +76,18 @@ const getBuscarAtorId = async function (id){
 
             // Validação para verificar a quantidade de itens retornados
             if(dadosAtores.length > 0){
+
+                for (let ator of dadosAtores){
+                    let sexoAtor = await sexoDAO.selectByIdSexo(ator.tbl_sexo_id)
+                    delete ator.tbl_sexo_id
+                    ator.sexo = sexoAtor
+                }
+                for (let ator of dadosAtores){
+                    let nacionalidadeAtor = await nacionalidadeDAO.selectAtoresNacionalidadeById(ator.id)
+                    if(nacionalidadeAtor.length > 0){
+                        ator.nacionalidade = nacionalidadeAtor
+                    }
+                }
                  // Cria o JSON para retorno 
             atoresJSON.atores = dadosAtores;
             atoresJSON.status_code = 200;
@@ -133,6 +145,19 @@ const setExcluirAtor = async function(id){
             let dadosAtores = await atorDAO.selectByNomeAtor (nomeAtor)
             if (dadosAtores){
                 if (dadosAtores.length>0){
+
+                    for (let ator of dadosAtores){
+                        let sexoAtor = await sexoDAO.selectByIdSexo(ator.tbl_sexo_id)
+                        delete ator.tbl_sexo_id
+                        ator.sexo = sexoAtor
+                    }
+                    for (let ator of dadosAtores){
+                        let nacionalidadeAtor = await nacionalidadeDAO.selectAtoresNacionalidadeById(ator.id)
+                        if(nacionalidadeAtor.length > 0){
+                            ator.nacionalidade = nacionalidadeAtor
+                        }
+                    }
+                    
                     atoresJSON.atores = dadosAtores
                     atoresJSON.status_code = 200 
                     return atoresJSON
@@ -167,6 +192,8 @@ const setAtualizarAtor = async function (id, dadosAtores, contentType){
                         updateAtores.status=message.SUCESS_UPTADE_ITEM.status
                         updateAtores.status_code=message.SUCESS_UPTADE_ITEM.status_code
                         updateAtores.message=message.SUCESS_UPTADE_ITEM.message
+                        console.log(updateAtoresJSON);
+
                         return updateAtores
                     }
                     else{
@@ -217,14 +244,13 @@ const setInserirAtor = async function (dadosAtores, contentType){
                     let novoAtor=await atorDAO.insertAtores(dadosAtores)
                     console.log(novoAtor);
                     if(novoAtor){
-                        console.log('oioioii');
+                       
                         novoAtorJSON.ator=dadosAtores
                         novoAtorJSON.status=message.SUCESS_CREATED_ITEM.status
-                        console.log('aaaaaaaaaaaa');
                         novoAtorJSON.status_code=message.SUCESS_CREATED_ITEM.status_code
                         novoAtorJSON.message=message.SUCESS_CREATED_ITEM.message
 
-                        console.log(novoAtorJSON);
+                        
                         ultimoID=await atorDAO.selectLastId()
                         dadosAtores.id=ultimoID[0].id  
                         

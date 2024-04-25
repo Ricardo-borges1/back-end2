@@ -5,12 +5,12 @@ const {PrismaClient} = require('@prisma/client');
 const prisma = new PrismaClient();
 
 
-const selectAtoresNacionalidadeById = async function(id){
+const selectDiretoresNacionalidadeById = async function(id){
     try {
         // Realiza a busca do filme pelo ID
-        let sql = `SELECT tn.nome AS nacionalidade_do_ator
-        FROM tbl_ator AS ta
-        INNER JOIN tbl_ator_nacionalidade AS tan ON ta.id = tan.tbl_ator_id
+        let sql = `SELECT tn.nome AS nacionalidade_do_diretor
+        FROM tbl_diretor AS ta
+        INNER JOIN tbl_diretor_nacionalidade AS tan ON ta.id = tan.tbl_diretor_id
         INNER JOIN tbl_nacionalidade AS tn ON tan.tbl_nacionalidade_id = tn.id
         WHERE ta.id = ${id}`;
         console.log(sql)
@@ -27,5 +27,5 @@ const selectAtoresNacionalidadeById = async function(id){
 
 
 module.exports = {
-    selectAtoresNacionalidadeById
+    selectDiretoresNacionalidadeById
 }
