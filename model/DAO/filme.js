@@ -75,6 +75,7 @@ const insertFilme = async function(dadosFilme){
         //$executeRawUnsafe serve para executar scripts sem retorno de dados
             //(insert, update e delete)
         //$queryRawUnsafe() - serve para executar scripts com retorno de dados (select)
+        console.log(sql);
         let result = await prisma.$executeRawUnsafe(sql);
 
         if (result)

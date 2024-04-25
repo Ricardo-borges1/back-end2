@@ -266,6 +266,18 @@ const getBuscarFilmeNome = async(nome) => {
 
 
      if(dadosFilmes){
+
+        for (let filme of dadosFilmes){
+            let classificacao = await classificacaoDAO.selectClassificacaoById(filme.tbl_classificacao_id)
+            delete filme.tbl_classificacao_id
+            filme.classificacao = classificacao
+        }
+        for (let filme of dadosFilmes){
+            let generoFilme = await generoFIlmeDAO.selectGeneroFilmeById(filme.id)
+            if(generoFilme.length > 0){
+                filme.generoFilmes = generoFilme
+            }
+        }
         if(dadosFilmes.length > 0){
                 filmesJSON.filme = dadosFilmes;
                 filmesJSON.status_code = 200;
@@ -308,6 +320,17 @@ const getBuscarFilme = async function (id){
         // verifca se o DAO retornou dados 
         if(dadosFilme){
 
+            for (let filme of dadosFilme){
+                let classificacao = await classificacaoDAO.selectClassificacaoById(filme.tbl_classificacao_id)
+                delete filme.tbl_classificacao_id
+                filme.classificacao = classificacao
+            }
+            for (let filme of dadosFilme){
+                let generoFilme = await generoFIlmeDAO.selectGeneroFilmeById(filme.id)
+                if(generoFilme.length > 0){
+                    filme.generoFilmes = generoFilme
+                }
+            }
             // Validação para verificar a quantidade de itens retornados
             if(dadosFilme.length > 0){
                  // Cria o JSON para retorno 

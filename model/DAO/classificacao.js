@@ -75,6 +75,7 @@ const insertClassificacao = async function(dadosClassificao){
                 '${dadosClassificao.icone}'
     )`;
 
+    console.log(sql);
         //$executeRawUnsafe serve para executar scripts sem retorno de dados
             //(insert, update e delete)
         //$queryRawUnsafe() - serve para executar scripts com retorno de dados (select)
