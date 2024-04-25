@@ -10,6 +10,10 @@ const message = require ('../modulo/config.js');
 
 // Import do arquivo DAO que fará a comuicação do banco de dados 
 const filmeDAO = require('../model/DAO/filme.js')
+const generoFIlmeDAO = require ('../model/DAO/generoFilme.js')
+const classificacaoDAO = require ('../model/DAO/classificacao.js')
+
+
 
 
 //função para validar e inserir um novo filme
@@ -204,7 +208,6 @@ const getListarFilmes = async function(){
 
     try {
 
-    
     // Cri o objeto JSON
     let filmesJSON = {};
 
@@ -214,7 +217,19 @@ const getListarFilmes = async function(){
     // Validação para verificar s existem dados 
     if (dadosFilmes){
 
-        if(dadosFilmes.length > 0){
+        if(dadosFilmes.length > 0){   
+
+            for (let filme of dadosFilmes){
+                let classificacao = await classificacaoDAO.selectClassificacaoById(filme.tbl_classificacao_id)
+                delete filme.tbl_classificacao_id
+                filme.classificacao = classificacao
+            }
+            for (let filme of dadosFilmes){
+                let generoFilme = await generoFIlmeDAO.selectGeneroFilmeById(filme.id)
+                if(generoFilme.length > 0){
+                    filme.generoFilmes = generoFilme
+                }
+            }
             
             // Cria o JSON para devolver para o APP
         filmesJSON.filmes = dadosFilmes;
