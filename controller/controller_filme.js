@@ -28,6 +28,7 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
 
     // cria o objeto JSON para devolver os dados criados na requisição
     let novoFilmeJSON = {};
+    let ultimoID
     
 
     // validação de campos obrigatorios ou com digitação inválida
@@ -37,7 +38,10 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
         dadosFilme.data_lancamento == ''          || dadosFilme.data_lancamento == undefined    ||  dadosFilme.data_lancamento == null    || dadosFilme.data_lancamento.length != 10 ||
         dadosFilme.foto_capa == ''                || dadosFilme.foto_capa == undefined          ||  dadosFilme.foto_capa ==  null         || dadosFilme.foto_capa.length > 200       ||
         dadosFilme.valor_unitario.length > 6 || 
-        dadosFilme.tbl_classificacao_id == '' || dadosFilme.tbl_classificacao_id == undefined || dadosFilme.tbl_classificacao_id == null   
+        dadosFilme.tbl_classificacao_id == '' || dadosFilme.tbl_classificacao_id == undefined || dadosFilme.tbl_classificacao_id == null ||
+        dadosFilme.id_genero == '' || dadosFilme.id_genero == undefined || dadosFilme.id_genero == null || 
+        dadosFilme.id_ator == '' || dadosFilme.id_ator == undefined || dadosFilme.id_ator == null ||
+        dadosFilme.id_diretor == '' || dadosFilme.id_diretor == undefined || dadosFilme.id_diretor == null
     ){
         
         // return do status code 400
@@ -74,14 +78,13 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
         if (novoFilme)
         {
 
-            let ultimoId = await filmeDAO.InsertById ()
-            dadosFilme.id = ultimoId[0].id
-        
             // se inseriu cria o JSON dos dados (201)
             novoFilmeJSON.filme  = dadosFilme
             novoFilmeJSON.status = message.SUCESS_CREATED_ITEM.status
             novoFilmeJSON.status_code = message.SUCESS_CREATED_ITEM.status_code
             novoFilmeJSON.message = message.SUCESS_CREATED_ITEM.message 
+            ultimoID = await filmeDAO.InsertById()
+            dadosFilme.id = ultimoID[0].id
 
             return novoFilmeJSON; // 201
         }else{
@@ -94,6 +97,7 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
         return message.ERROR_CONTENT_TYPE // 415
     }
 } catch(error){
+    console.log(error)
     return message.ERROR_INTERNAL_SERVER // 500
 }
 

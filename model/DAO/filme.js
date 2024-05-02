@@ -70,7 +70,7 @@ const insertFilme = async function(dadosFilme){
         )`;
         let result=await prisma.$executeRawUnsafe(sql)
         if(result){
-            let idFilme=await selectLastID()
+            let idFilme=await selectLastId()
             //loop para inserir os generos na tabela intermediária
             for(let genero of dadosFilme.id_genero){
                 sql=`insert into tbl_filme_genero(
@@ -80,7 +80,7 @@ const insertFilme = async function(dadosFilme){
                         ${idFilme[0].id},
                         ${genero}
                     )`
-                let result=await prisma.$executeRawUnsafe(sql)
+                let result = await prisma.$executeRawUnsafe(sql)
                 //enquanto os dados estiverem sendo inseridos o loop vai continuar, caso aconteça algum erro, o código para e retorna falso
                 if(result)
                     continue

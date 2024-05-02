@@ -174,10 +174,10 @@ const selectLastId = async function () {
 
 const selectFilmeByDiretor = async function(id){
     try {
-        let sql = `SELECT tbl_diretor.id, tbl_diretor.nome, tbl_diretor.data_nascimento, tbl_diretor.data_falecimento, tbl_diretor.biografia, tbl_diretor.foto
-        FROM tbl_diretor
-        INNER JOIN tbl_filme_diretor ON tbl_diretor.id = tbl_filme_diretor.tbl_diretor_id
-        WHERE tbl_filme_diretor.tbl_filme_id = ${id};
+        let sql = `SELECT td.id AS id_diretor, td.nome, td.data_nascimento, td.data_falecimento, td.biografia, td.foto
+        FROM tbl_diretor AS td
+        INNER JOIN tbl_filme_diretor AS tfd ON td.id = tfd.tbl_diretor_id
+        WHERE tfd.tbl_filme_id =${id};
 `
         let rsFilmes = await prisma.$queryRawUnsafe(sql)
         return rsFilmes
