@@ -62,7 +62,7 @@ console.log(contentType);
     // validação de campos obrigatorios ou com digitação inválida
     if(dadosClassificacao.caracteristicas == ''    || dadosClassificacao.caracteristicas == undefined       ||  dadosClassificacao.caracteristicas == null               || dadosClassificacao.caracteristicas.length > 800 ||
        dadosClassificacao.faixa_etaria == ''  ||   dadosClassificacao.faixa_etaria == undefined  || dadosClassificacao.faixa_etaria == null   || dadosClassificacao.faixa_etaria.length > 2 ||
-       dadosClassificacao.classificacao == '' ||  dadosClassificacao.classificacao == undefined || dadosClassificacao.classificacao == null  || dadosClassificacao.classificacao.length > 45 ||  
+       dadosClassificacao.classificacao == '' ||  dadosClassificacao.classificacao == undefined || dadosClassificacao.classificacao == null  || dadosClassificacao.classificacao.length > 200 ||  
        dadosClassificacao.icone == '' ||  dadosClassificacao.icone == undefined || dadosClassificacao.icone == null  || dadosClassificacao.icone > 200    
     ){
         
@@ -123,10 +123,11 @@ const setAtualizarClassificacao = async function(id, dadosClassificacao, content
         if(String(contentType).toLowerCase() == 'application/json'){
             let updateClassificacaoJson = {};
             
-            if(dadosClassificacao.caracteristicas == ''    || dadosClassificacao.caracteristicas == undefined       ||  dadosClassificacao.caracteristicas == null               || dadosClassificacao.caracteristicas.length > 150 ||
-       dadosClassificacao.faixa_etaria == ''  ||   dadosClassificacao.faixa_etaria == undefined  || dadosClassificacao.faixa_etaria == null   || dadosClassificacao.faixa_etaria > 2 ||
-       dadosClassificacao.classificacao == '' ||  dadosClassificacao.classificacao == undefined || dadosClassificacao.classificacao == null  || dadosClassificacao.classificacao > 45      
-    ){
+            if(dadosClassificacao.caracteristicas == ''    || dadosClassificacao.caracteristicas == undefined       ||  dadosClassificacao.caracteristicas == null               || dadosClassificacao.caracteristicas.length > 800 ||
+            dadosClassificacao.faixa_etaria == ''  ||   dadosClassificacao.faixa_etaria == undefined  || dadosClassificacao.faixa_etaria == null   || dadosClassificacao.faixa_etaria.length > 2 ||
+            dadosClassificacao.classificacao == '' ||  dadosClassificacao.classificacao == undefined || dadosClassificacao.classificacao == null  || dadosClassificacao.classificacao.length > 200 ||  
+            dadosClassificacao.icone == '' ||  dadosClassificacao.icone == undefined || dadosClassificacao.icone == null  || dadosClassificacao.icone > 200    
+         ){
             return message.ERROR_REQUIRED_FIELDS
         } else {
 

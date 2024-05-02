@@ -12,6 +12,8 @@ const message = require ('../modulo/config.js');
 const filmeDAO = require('../model/DAO/filme.js')
 const generoFIlmeDAO = require ('../model/DAO/generoFilme.js')
 const classificacaoDAO = require ('../model/DAO/classificacao.js')
+const diretorDAO = require ('../model/DAO/diretor.js')
+const atorDAO = require ('../model/DAO/atores.js')
 
 
 
@@ -230,6 +232,19 @@ const getListarFilmes = async function(){
                     filme.generoFilmes = generoFilme
                 }
             }
+            for (let filme of dadosFilmes){
+                let diretorFilme = await diretorDAO.selectFilmeByDiretor(filme.id)
+                if(diretorFilme.length > 0){
+                    filme.diretorFilmes = diretorFilme
+                }
+            }
+            for (let filme of dadosFilmes){
+                let atorFilme = await atorDAO.selectFilmeByAtor(filme.id)
+                if(atorFilme.length > 0){
+                    filme.atorFilmes = atorFilme
+                }
+            }
+
             
             // Cria o JSON para devolver para o APP
         filmesJSON.filmes = dadosFilmes;
@@ -244,6 +259,7 @@ const getListarFilmes = async function(){
     }
 
 } catch (error) {
+    
     
     return message.ERROR_INTERNAL_SERVER;
 }
