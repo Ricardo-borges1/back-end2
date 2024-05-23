@@ -223,7 +223,7 @@ const setInserirAtor = async function (dadosAtores, contentType){
             dadosAtores.data_nascimento=='' ||dadosAtores.data_nascimento==undefined ||dadosAtores.data_nascimento==null ||dadosAtores.data_nascimento.length!=10 ||
             dadosAtores.biografia==''       ||dadosAtores.biografia==undefined       ||dadosAtores.biografia==null       ||dadosAtores.biografia.length>65000     ||
             dadosAtores.foto==''            ||dadosAtores.foto==undefined            ||dadosAtores.foto==null            ||dadosAtores.foto.length>150            ||
-            dadosAtores.sexo[0].nome==''     ||dadosAtores.sexo[0].nome==undefined         ||dadosAtores.sexo[0].nome==null         ||dadosAtores.sexo[0].nome.length>20
+            dadosAtores.sexo==''     ||dadosAtores.sexo==undefined         ||dadosAtores.sexo==null        
             ) {
                 console.log('aqui');
                 return message.ERROR_REQUIRED_FIELDS

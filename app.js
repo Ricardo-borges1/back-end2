@@ -382,7 +382,7 @@ app.put('/v1/filmesAcme/uptadeClassificacao/:id', cors(), bodyParserJson, async 
 // **************************************************************************************************************************************//
 
 
-//EndPoint : Versão 2.0 - retorna todos os atores do Banco de Dados 
+//EndPoint : Versão 2.0 - retorna todos os diretores do Banco de Dados 
 app.get('/v2/filmesAcme/diretores', cors(),async function (request,response,next){
 
     // chama a função da controller para retornar os atores;

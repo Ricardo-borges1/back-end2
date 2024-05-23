@@ -38,10 +38,8 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
         dadosFilme.data_lancamento == ''          || dadosFilme.data_lancamento == undefined    ||  dadosFilme.data_lancamento == null    || dadosFilme.data_lancamento.length != 10 ||
         dadosFilme.foto_capa == ''                || dadosFilme.foto_capa == undefined          ||  dadosFilme.foto_capa ==  null         || dadosFilme.foto_capa.length > 200       ||
         dadosFilme.valor_unitario.length > 6 || 
-        dadosFilme.tbl_classificacao_id == '' || dadosFilme.tbl_classificacao_id == undefined || dadosFilme.tbl_classificacao_id == null ||
-        dadosFilme.id_genero == '' || dadosFilme.id_genero == undefined || dadosFilme.id_genero == null || 
-        dadosFilme.id_ator == '' || dadosFilme.id_ator == undefined || dadosFilme.id_ator == null ||
-        dadosFilme.id_diretor == '' || dadosFilme.id_diretor == undefined || dadosFilme.id_diretor == null
+        dadosFilme.tbl_classificacao_id == '' || dadosFilme.tbl_classificacao_id == undefined || dadosFilme.tbl_classificacao_id == null 
+        
     ){
         
         // return do status code 400
@@ -74,6 +72,7 @@ const setInserirNovoFilme = async function (dadosFilme, contentType ){
         // Encaminha os dados do filme para o DAO inserir dados
         let novoFilme = await filmeDAO.insertFilme(dadosFilme);
 
+        console.log(novoFilme)
         // validação para verificar se o DAO inseriu os dados do BD
         if (novoFilme)
         {

@@ -198,7 +198,7 @@ const setInserirDiretor = async function (dadosDiretores, contentType){
             dadosDiretores.data_nascimento=='' ||dadosDiretores.data_nascimento==undefined ||dadosDiretores.data_nascimento==null ||dadosDiretores.data_nascimento.length!=10 ||
             dadosDiretores.biografia==''       ||dadosDiretores.biografia==undefined       ||dadosDiretores.biografia==null       ||dadosDiretores.biografia.length>65000     ||
             dadosDiretores.foto==''            ||dadosDiretores.foto==undefined            ||dadosDiretores.foto==null            ||dadosDiretores.foto.length>150            ||
-            dadosDiretores.sexo[0].nome==''     ||dadosDiretores.sexo[0].nome==undefined         ||dadosDiretores.sexo[0].nome==null         ||dadosDiretores.sexo[0].nome.length>20
+            dadosDiretores.sexo==''     ||dadosDiretores.sexo==undefined         ||dadosDiretores.sexo==null         
             ) {
                 
                 return message.ERROR_REQUIRED_FIELDS

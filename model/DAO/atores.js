@@ -83,7 +83,7 @@ const insertAtores = async function (dadosAtores){
                 '${dadosAtores.data_falecimento}',
                 '${dadosAtores.biografia}',
                 '${dadosAtores.foto}',
-                '${dadosAtores.sexo[0].id}'
+                '${dadosAtores.sexo}'
             )`
 
             let result = await prisma.$executeRawUnsafe(sql)
@@ -106,7 +106,7 @@ const insertAtores = async function (dadosAtores){
                 null,
                 '${dadosAtores.biografia}',
                 '${dadosAtores.foto}',
-                '${dadosAtores.sexo[0].id}'
+                '${dadosAtores.sexo}'
             )`
             
 
@@ -124,7 +124,6 @@ const insertAtores = async function (dadosAtores){
 
 const updateAtores = async function (id, dadosAtores){
     try {
-        
         let sql 
 
         if(dadosAtores.data_falecimento!=''&&
@@ -134,23 +133,23 @@ const updateAtores = async function (id, dadosAtores){
             sql = `update tbl_ator set 
 
             nome = '${dadosAtores.nome}',
-            data_nascimento = '${dadosAtores.data_nascimento}',
-            data_falecimento = '${dadosAtores.data_falecimento}',
+            data_nascimento = '${dadosAtores.nascimento}',
+            data_falecimento = '${dadosAtores.falecimento}',
             biografia = '${dadosAtores.biografia}',
             foto = '${dadosAtores.foto}',
-            tbl_sexo_id = '${dadosAtores.sexo[0].id}' where tbl_ator.id = '${id}'
+            tbl_sexo_id = '${dadosAtores.sexo}' where tbl_ator.id = '${id}'
             `
         } else {
 
             sql = `update tbl_ator set 
                 nome =  '${dadosAtores.nome}',
-                data_nascimento = '${dadosAtores.data_nascimento}',
+                data_nascimento = '${dadosAtores.nascimento}',
                 data_falecimento =  null,
                 biografia =  '${dadosAtores.biografia}',
                 foto = '${dadosAtores.foto}',
-                tbl_sexo_id = '${dadosAtores.sexo[0].id}' where tbl_ator.id = '${id}'`
+                tbl_sexo_id = '${dadosAtores.sexo}' where tbl_ator.id = '${id}'`
         }
-        
+        console.log(sql);
         let result = await prisma.$executeRawUnsafe(sql)
         if (result)
             return true

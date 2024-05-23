@@ -78,7 +78,7 @@ const insertDiretores = async function (dadosDiretores){
                 '${dadosDiretores.data_nascimento}',
                 '${dadosDiretores.biografia}',
                 '${dadosDiretores.foto}',
-                '${dadosDiretores.sexo[0].id}'
+                '${dadosDiretores.sexo}'
             );`
         } else {
             sql = `insert into tbl_diretor (
@@ -94,7 +94,7 @@ const insertDiretores = async function (dadosDiretores){
                 '${dadosDiretores.data_falecimento}',
                 '${dadosDiretores.biografia}',
                 '${dadosDiretores.foto}',
-                '${dadosDiretores.sexo[0].id}'
+                '${dadosDiretores.sexo}'
             )`
         }
         console.log(sql);
@@ -124,21 +124,21 @@ const updateDiretores = async function (id, dadosDiretores){
             sql = `update tbl_diretor set 
 
             nome = '${dadosDiretores.nome}',
-            data_nascimento = '${dadosDiretores.data_nascimento}',
-            data_falecimento = '${dadosDiretores.data_falecimento}',
+            data_nascimento = '${dadosDiretores.nascimento}',
+            data_falecimento = '${dadosDiretores.falecimento}',
             biografia = '${dadosDiretores.biografia}',
             foto = '${dadosDiretores.foto}',
-            tbl_sexo_id = '${dadosDiretores.sexo[0].id}' where tbl_diretor.id = '${id}'
+            tbl_sexo_id = '${dadosDiretores.sexo}' where tbl_diretor.id = '${id}'
             `
         } else {
 
             sql = `update tbl_diretor set 
                 nome =  '${dadosDiretores.nome}',
-                data_nascimento = '${dadosDiretores.data_nascimento}',
+                data_nascimento = '${dadosDiretores.nascimento}',
                 data_falecimento =  null,
                 biografia =  '${dadosDiretores.biografia}',
                 foto = '${dadosDiretores.foto}',
-                tbl_sexo_id = '${dadosDiretores.sexo[0].id}' where tbl_diretor.id = '${id}'`
+                tbl_sexo_id = '${dadosDiretores.sexo}' where tbl_diretor.id = '${id}'`
         }
         
         let result = await prisma.$executeRawUnsafe(sql)
